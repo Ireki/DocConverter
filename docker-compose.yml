@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    environment:
+       - AppConverter=libreoffice
+       - Urls=https://+:443;http://+:80
