@@ -1,11 +1,20 @@
 using DocConverter.ApplicationCore.Common.Constants;
+using Microsoft.Extensions.Hosting.WindowsServices;
 
-var builder = WebApplication.CreateBuilder(args);
+var options = new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = WindowsServiceHelpers.IsWindowsService()
+                                     ? AppContext.BaseDirectory : default
+};
+
+var builder = WebApplication.CreateBuilder(options);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Configuration.AddEnvironmentVariables();
+builder.Host.UseWindowsService();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
