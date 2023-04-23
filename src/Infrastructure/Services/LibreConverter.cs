@@ -7,7 +7,7 @@ namespace DocConverter.Infrastructure.Services
 {
     public class LibreConverter : IConverter
     {
-        private string СonversionСommand => $" --convert-to {_convertibleItem.ConvertTo}";
+        private string СonversionСommand => $" --headless --convert-to {_convertibleItem.ConvertTo}";
         private readonly ConvertibleItem _convertibleItem;
 
         public LibreConverter(ConvertibleItem convertibleItem)
@@ -20,7 +20,7 @@ namespace DocConverter.Infrastructure.Services
             await FileHelpers.SaveFileAsync(_convertibleItem.File, _convertibleItem.UniqueFileName, AppSettings.WorkingDirectory);
             await ProcessRunner.RunProcessAsync(
                 AppSettings.AppConverter, 
-                $"{СonversionСommand} {_convertibleItem.UniqueFileName}",
+                $"{СonversionСommand} \"{_convertibleItem.UniqueFileName}\"",
                 AppSettings.WorkingDirectory);
 
             var outPath = Path.Combine(AppSettings.WorkingDirectory, $"{_convertibleItem.UniqueFileNameWithoutExtension}.{_convertibleItem.ConvertTo}");
